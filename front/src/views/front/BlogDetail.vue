@@ -4,13 +4,11 @@
       <div>
         <div class="card" style="font-size: 20px; text-align: center">
           <div>
-            <span style="cursor: pointer"><i class="el-icon-circle-plus"></i></span>
+            <span style="cursor: pointer" @click="setLikes" :class="{ 'active' : blog.userLike }"><i class="el-icon-s-opportunity"></i> {{ blog.likesCount }}</span>
           </div>
-          <div>
-            <span style="cursor: pointer"><i class="el-icon-remove"></i></span>
-          </div>
+
           <div style="margin-top: 10px">
-            <span style="cursor: pointer"><i class="el-icon-star-off"></i></span>
+            <span style="cursor: pointer"><i class="el-icon-star-off"></i> 0</span>
           </div>
         </div>
       </div>
@@ -26,7 +24,7 @@
             </span>
             <span style="margin-right: 20px">
 <!--              <i class="el-icon-date" style="margin-right: 10px"></i>{{ blog.date }}-->
-              Publish Date <span style="font-weight: bold; text-decoration: underline"><i>{{ blog.date }}</i></span>
+              <span style="font-weight: bold; text-decoration: underline"><i>{{ blog.date }}</i></span>
             </span>
             <span>
 <!--              <i class="el-icon-view" style="margin-right: 10px"></i>{{ blog.readCount }}-->
@@ -40,6 +38,10 @@
           <div class="w-e-text">
             <div v-html="blog.content"></div>
           </div>
+        </div>
+
+        <div class="card">
+
         </div>
       </div>
 
@@ -72,17 +74,12 @@
         </div>
 
         <div class="card" style="margin-bottom: 10px">
-          <div style="font-weight: bold;
-          font-size: 16px;
-          padding-bottom: 10px;
-          border-bottom: 1px solid #ddd;
-          margin-bottom: 10px">Recommend to read</div>
-
+          <div style="font-weight: bold; font-size: 16px; padding-bottom: 10px; border-bottom: 1px solid #ddd; margin-bottom: 10px">Recommend to read</div>
           <div>
             <div style="margin-bottom: 10px" v-for="item in recommendList" :key="item.id">
-              <div>HI</div>
-              <div>
-                <span>Views</span> <span></span>
+              <div style="margin-bottom: 5px">{{ item.title }}</div>
+              <div style="color: #888">
+                <span>Views</span> <span>{{ item.readCount }}</span>
                 <span style="margin-left: 10px">Likes</span> <span></span>
               </div>
             </div>
@@ -107,7 +104,7 @@ export default {
       blog: {},
 
       tagsArr: [],
-      recommendList: []
+      recommendList: [],
     }
   },
 
@@ -116,13 +113,34 @@ export default {
   },
 
   methods: {
+    setLikes() {
+      this.$request.post('/likes/set', { fid: this.blogID, module: "Blog" }).then(res => {
+        if (res.code === '200') {
+          this.$message.success("success")
+          this.load()
+        }
+      })
+    },
+
+    setCollect() {
+      this.$request.post('/collect/set', { fid: this.blogID, module: "Blog" }).then(res => {
+        if (res.code === '200') {
+          this.$message.success("success")
+          this.load()
+        }
+      })
+    },
+
     load() {
       this.$request.get('/blog/selectById/' + this.blogID).then(res => {
         this.blog = res.data || {}
-
         this.tagsArr = JSON.parse(this.blog.tags || '[]')
       })
-    }
+
+      this.$request.get('/blog/selectRecommend/' + this.blogID).then(res => {
+        this.recommendList = res.data || []
+      })
+    },
   }
 }
 </script>
@@ -152,7 +170,12 @@ code {
 pre code {
   display: block;
 }
+
 p {
   line-height: 30px
+}
+
+.active {
+  color: dodgerblue !important;
 }
 </style>

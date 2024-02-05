@@ -1,5 +1,7 @@
 package com.example.entity;
 
+import java.util.Objects;
+
 public class Blog {
     /** ID */
     private Integer id;
@@ -26,6 +28,27 @@ public class Blog {
 
     private User user;
 
+    private Integer likesCount;
+    private Boolean userLike;
+
+
+// getter and setter
+
+    public Boolean getUserLike() {
+        return userLike;
+    }
+
+    public void setUserLike(Boolean userLike) {
+        this.userLike = userLike;
+    }
+
+    public Integer getLikesCount() {
+        return likesCount;
+    }
+
+    public void setLikesCount(Integer likesCount) {
+        this.likesCount = likesCount;
+    }
 
     public User getUser() {
         return user;
@@ -129,5 +152,17 @@ public class Blog {
 
     public void setCategoryId(Integer categoryId) {
         this.categoryId = categoryId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Blog blog)) return false;
+        return Objects.equals(getId(), blog.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
     }
 }
