@@ -197,8 +197,4 @@ export default {
 .blog-title:hover {
   color: blue;
 }
-
-a {
-  color: black;
-}
 </style>

@@ -8,7 +8,7 @@
           </div>
 
           <div style="margin-top: 10px">
-            <span style="cursor: pointer"><i class="el-icon-star-off"></i> 0</span>
+            <span style="cursor: pointer" @click="setCollect" :class="{ 'active' : blog.userCollect }"><i class="el-icon-star-on"></i> {{ blog.collectCount }}</span>
           </div>
         </div>
       </div>
@@ -77,10 +77,10 @@
           <div style="font-weight: bold; font-size: 16px; padding-bottom: 10px; border-bottom: 1px solid #ddd; margin-bottom: 10px">Recommend to read</div>
           <div>
             <div style="margin-bottom: 10px" v-for="item in recommendList" :key="item.id">
-              <div style="margin-bottom: 5px">{{ item.title }}</div>
+              <a :href="'/front/blogDetail?blogID=' + item.id"><div style="margin-bottom: 5px" class="blog-title">{{ item.title }}</div></a>
               <div style="color: #888">
                 <span>Views</span> <span>{{ item.readCount }}</span>
-                <span style="margin-left: 10px">Likes</span> <span></span>
+                <span style="margin-left: 10px">Likes</span> <span>{{ item.likesCount }}</span>
               </div>
             </div>
           </div>
@@ -177,5 +177,15 @@ p {
 
 .active {
   color: dodgerblue !important;
+}
+
+.blog-title {
+  font-weight: bold;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.blog-title:hover {
+  color: dodgerblue;
 }
 </style>

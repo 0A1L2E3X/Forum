@@ -6,10 +6,7 @@ import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONUtil;
 import com.example.common.enums.LikesModuleEnum;
 import com.example.common.enums.RoleEnum;
-import com.example.entity.Account;
-import com.example.entity.Blog;
-import com.example.entity.Likes;
-import com.example.entity.User;
+import com.example.entity.*;
 import com.example.mapper.BlogMapper;
 import com.example.utils.TokenUtils;
 import com.github.pagehelper.PageHelper;
@@ -33,6 +30,9 @@ public class BlogService {
 
     @Resource
     LikesService likesService;
+
+    @Resource
+    CollectService collectService;
 
     /**
      * 新增
@@ -81,6 +81,12 @@ public class BlogService {
         blog.setLikesCount(likesCount);
         Likes userLikes = likesService.selectUserLikes(id, LikesModuleEnum.BLOG.getValue());
         blog.setUserLike(userLikes != null);
+
+        int collectCount = collectService.selectByFidAndModule(id, LikesModuleEnum.BLOG.getValue());
+        blog.setCollectCount(collectCount);
+        Collect userCollect = collectService.selectUserCollect(id, LikesModuleEnum.BLOG.getValue());
+        blog.setUserCollect(userCollect != null);
+
         return blog;
     }
 
@@ -97,6 +103,11 @@ public class BlogService {
     public PageInfo<Blog> selectPage(Blog blog, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         List<Blog> list = blogMapper.selectAll(blog);
+
+        for (Blog b : list) {
+            int likesCount = likesService.selectByFidAndModule(b.getId(), LikesModuleEnum.BLOG.getValue());
+            b.setLikesCount(likesCount);
+        }
         return PageInfo.of(list);
     }
 
@@ -122,6 +133,12 @@ public class BlogService {
                 blogSet.addAll(collect);
             }
         }
-        return blogSet.stream().limit(5).collect(Collectors.toSet());
+        blogSet = blogSet.stream().limit(5).collect(Collectors.toSet());
+        blogSet.forEach(b -> {
+            int likesCount = likesService.selectByFidAndModule(b.getId(), LikesModuleEnum.BLOG.getValue());
+            b.setLikesCount(likesCount);
+        });
+
+        return blogSet;
     }
 }
