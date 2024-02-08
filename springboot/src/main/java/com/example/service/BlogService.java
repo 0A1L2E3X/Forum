@@ -75,6 +75,24 @@ public class BlogService {
     public Blog selectById(Integer id) {
         Blog blog = blogMapper.selectById(id);
         User user = userService.selectById(blog.getUserId());
+
+        List<Blog> userBlogList = blogMapper.selectUserBlog(user.getId());
+        user.setBlogCount(userBlogList.size());
+
+        int userLikesCount = 0;
+        int userCollectCount = 0;
+
+        for (Blog b : userBlogList) {
+            Integer fid = b.getId();
+            int likesCount = likesService.selectByFidAndModule(fid, LikesModuleEnum.BLOG.getValue());
+            userLikesCount += likesCount;
+
+            int collectCount = collectService.selectByFidAndModule(fid, LikesModuleEnum.BLOG.getValue());
+            userCollectCount += collectCount;
+        }
+        user.setLikesCount(userLikesCount);
+        user.setCollectCount(userCollectCount);
+
         blog.setUser(user);
 
         int likesCount = likesService.selectByFidAndModule(id, LikesModuleEnum.BLOG.getValue());
@@ -86,6 +104,9 @@ public class BlogService {
         blog.setCollectCount(collectCount);
         Collect userCollect = collectService.selectUserCollect(id, LikesModuleEnum.BLOG.getValue());
         blog.setUserCollect(userCollect != null);
+
+        blog.setReadCount(blog.getReadCount() + 1);
+        this.updateById(blog);
 
         return blog;
     }

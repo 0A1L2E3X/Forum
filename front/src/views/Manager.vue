@@ -3,7 +3,7 @@
     <!--  头部  -->
     <div class="manager-header">
       <div class="manager-header-left">
-        <img src="@/assets/imgs/logo.png" />
+        <img src="@/assets/imgs/logo.png" alt="">
         <div class="title">Backend Management</div>
       </div>
 
@@ -17,8 +17,8 @@
       <div class="manager-header-right">
         <el-dropdown placement="bottom">
           <div class="avatar">
-            <img :src="user.avatar || 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'" />
-            <div>{{ user.username ||  '管理员' }}</div>
+            <img :src="user.avatar || 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'" alt="">
+            <div>{{ user.username ||  'Admin' }}</div>
           </div>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item @click.native="goToPerson">UserInfo</el-dropdown-item>
@@ -46,6 +46,7 @@
             <el-menu-item index="/blog">Blogs Management</el-menu-item>
             <el-menu-item index="/activity">Activity Management</el-menu-item>
             <el-menu-item index="/notice">Announcement</el-menu-item>
+            <el-menu-item index="/comment">Comment</el-menu-item>
           </el-submenu>
 
           <el-submenu index="user">

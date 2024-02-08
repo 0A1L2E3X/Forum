@@ -40,9 +40,7 @@
           </div>
         </div>
 
-        <div class="card">
-
-        </div>
+        <CommentComponent :fid="blogID" module="Blog"/>
       </div>
 
       <div style="width: 260px">
@@ -58,17 +56,17 @@
           <div style="display: flex">
             <div style="flex: 1; text-align: center">
               <div style="margin-bottom: 5px"><i>Articles</i></div>
-              <div>0</div>
+              <div>{{ blog.user?.blogCount }}</div>
             </div>
 
             <div style="flex: 1; text-align: center">
               <div style="margin-bottom: 5px"><i>Likes</i></div>
-              <div>0</div>
+              <div>{{ blog.user?.likesCount }}</div>
             </div>
 
             <div style="flex: 1; text-align: center">
               <div style="margin-bottom: 5px"><i>Favorites</i></div>
-              <div>0</div>
+              <div>{{ blog.user?.collectCount }}</div>
             </div>
           </div>
         </div>
@@ -95,9 +93,13 @@
 </template>
 
 <script>
+import CommentComponent from "@/components/Comment.vue";
 
 export default {
   name: "BlogDetail",
+  components: {
+    CommentComponent
+  },
   data() {
     return {
       blogID: this.$route.query.blogID,
@@ -187,5 +189,9 @@ p {
 
 .blog-title:hover {
   color: dodgerblue;
+}
+
+.comment-active {
+  color: #2A60C9;
 }
 </style>

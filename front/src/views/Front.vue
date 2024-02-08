@@ -18,7 +18,7 @@
 
       <div>
         <el-input style="width: 250px; margin-right: 10px" placeholder="please blog title"></el-input>
-        <el-button>search</el-button>
+        <el-button class="btnSearch">search</el-button>
       </div>
 
       <div class="front-header-right">
@@ -97,6 +97,6 @@ export default {
 }
 </script>
 
-<style scoped>
-  @import "@/assets/css/front.css";
+<style scoped src="@/assets/css/front.css">
+//@import "@/assets/css/front.css";
 </style>

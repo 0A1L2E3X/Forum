@@ -14,7 +14,7 @@
         <div class="blog-box"
              v-for="item in tableData" :key="item.id" v-if="total > 0">
           <div style="flex: 1; width: 0">
-            <a :href="'/front/blogDetail?blogID=' + item.id" target="_blank"><div class="blog-title">{{ item.title }}</div></a>
+            <a :href="'/front/blogDetail?blogID=' + item.id"><div class="blog-title">{{ item.title }}</div></a>
             <div class="line1" style="margin-bottom: 10px; color: #666; font-size: 12px">{{ item.descr }}</div>
             <div style="display: flex">
               <div style="flex: 1; font-size: 12px">
@@ -66,13 +66,15 @@
 
           <div>
             <div style="margin: 15px 0" v-for="item in showList" :key="item.id">
-              <span style="width: 20px; display: inline-block">
-                <span style="color: red" v-if="item.index === 1">{{ item.index }}</span>
-                <span style="color: goldenrod" v-else-if="item.index === 2">{{ item.index }}</span>
-                <span style="color: blue" v-else-if="item.index === 3">{{ item.index }}</span>
-                <span v-else>{{ item.index }}</span>
-              </span>
-              <span><i>{{ item.title }}</i></span>
+              <a :href="'/front/blogDetail?blogID=' + item.id">
+                <span style="width: 20px; display: inline-block">
+                  <span style="color: red" v-if="item.index === 1">{{ item.index }}</span>
+                  <span style="color: goldenrod" v-else-if="item.index === 2">{{ item.index }}</span>
+                  <span style="color: blue" v-else-if="item.index === 3">{{ item.index }}</span>
+                  <span v-else>{{ item.index }}</span>
+                </span>
+                <span><i>{{ item.title }}</i></span>
+              </a>
             </div>
           </div>
 
@@ -197,4 +199,5 @@ export default {
 .blog-title:hover {
   color: blue;
 }
+
 </style>

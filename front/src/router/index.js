@@ -36,6 +36,8 @@ const routes = [
         component: () => import('../views/manager/Blog.vue') },
       { path: 'activity', name: 'Activity', meta: { name: 'Activity' },
         component: () => import('../views/manager/Activity.vue') },
+      { path: 'comment', name: 'Comment', meta: { name: 'Comment' },
+        component: () => import('../views/manager/Comment.vue') },
     ]
   },
   {
