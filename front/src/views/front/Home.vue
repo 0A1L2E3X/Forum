@@ -10,43 +10,8 @@
         </div>
       </div>
 
-      <div class="card" style="flex: 1">
-        <div class="blog-box"
-             v-for="item in tableData" :key="item.id" v-if="total > 0">
-          <div style="flex: 1; width: 0">
-            <a :href="'/front/blogDetail?blogID=' + item.id"><div class="blog-title">{{ item.title }}</div></a>
-            <div class="line1" style="margin-bottom: 10px; color: #666; font-size: 12px">{{ item.descr }}</div>
-            <div style="display: flex">
-              <div style="flex: 1; font-size: 12px">
-                <span style="margin-right: 20px">publisher: {{ item.userName }}</span>
-                <span style="margin-right: 20px">views: {{ item.readCount }}</span>
-                <span style="margin-right: 20px">likes: {{ item.likesCount }}</span>
-              </div>
-
-              <div style="width: fit-content">
-                <el-tag v-for="item in JSON.parse(item.tags || '[]')" :key="item" style="margin-right: 5px">{{ item }}</el-tag>
-              </div>
-            </div>
-          </div>
-
-          <div style="width: 125px">
-            <img style="width: 100%; height: 80px; border-radius: 5px" :src="item.cover" alt=""></img>
-          </div>
-        </div>
-
-        <div v-else  v-if="total === 0" style="padding: 20px 0; text-align: center; font-size: 16px; color: #666">No data</div>
-
-        <div style="margin-top: 10px">
-          <el-pagination
-              background
-              @current-change="handleCurrentChange"
-              :current-page="pageNum"
-              :page-sizes="[5, 10, 20]"
-              :page-size="pageSize"
-              layout="total, prev, pager, next"
-              :total="total">
-          </el-pagination>
-        </div>
+      <div style="flex: 1">
+        <BlogList :categoryName="current" ref="blogListRef" />
       </div>
 
       <div style="width: 250px">
@@ -86,17 +51,15 @@
 
 <script>
 
+import BlogList from "@/components/BlogList.vue";
+
 export default {
+  components: { BlogList },
 
   data() {
     return {
       current: 'All Blogs',
       categoryList: [],
-
-      tableData: [],  // 所有的数据
-      pageNum: 1,   // 当前的页码
-      pageSize: 10,  // 每页显示的个数
-      total: 0,
 
       topList: [],
       showList: [],
@@ -107,7 +70,6 @@ export default {
   },
   mounted() {
     this.load()
-    this.loadBlogs(1)
     this.refreshTop()
   },
   // methods：本页面所有的点击事件或者其他函数定义区
@@ -118,26 +80,11 @@ export default {
         this.categoryList.unshift({ name: 'All Blogs' })
       })
     },
-    loadBlogs(pageNum) {
-      if (pageNum) this.pageNum = pageNum
-      this.$request.get('/blog/selectPage', {
-        params: {
-          pageNum: this.pageNum,
-          pageSize: this.pageSize,
-          categoryName: this.current === 'All Blogs' ? null : this.current,
-        }
-      }).then(res => {
-        this.tableData = res.data?.list
-        this.total = res.data?.total
-      })
-    },
-    handleCurrentChange(pageNum) {
-      this.loadBlogs(pageNum)
-    },
+
     selectCategory(categoryName) {
       this.current = categoryName
-      this.loadBlogs(1)
     },
+
     refreshTop() {
       this.$request.get('/blog/selectTop').then(res => {
         this.topList = res.data || []
@@ -169,35 +116,4 @@ export default {
   color: white;
   border-radius: 5px;
 }
-
-.line1 {
-  white-space: nowrap;
-  width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.blog-box {
-  display: flex;
-  grid-gap: 10px;
-  padding: 15px 0;
-  border-bottom: 1px solid #ddd;
-  margin-bottom: 10px
-}
-
-.blog-box:first-child {
-  padding-top: 0;
-}
-
-.blog-title {
-  font-size: 16px;
-  font-weight: bold;
-  margin-bottom: 10px;
-  cursor: pointer;
-}
-
-.blog-title:hover {
-  color: blue;
-}
-
 </style>

@@ -17,8 +17,8 @@
       </div>
 
       <div>
-        <el-input style="width: 250px; margin-right: 10px" placeholder="please blog title"></el-input>
-        <el-button class="btnSearch">search</el-button>
+        <el-input style="width: 250px; margin-right: 10px" placeholder="please blog title" v-model="title" clearable></el-input>
+        <el-button class="btnSearch" @click="toSearch">search</el-button>
       </div>
 
       <div class="front-header-right">
@@ -61,13 +61,20 @@ export default {
       top: '',
       notice: [],
       user: JSON.parse(localStorage.getItem("xm-user") || '{}'),
+
+      title: this.$route.query.title,
     }
   },
 
   mounted() {
     this.loadNotice()
   },
+
   methods: {
+    toSearch() {
+      location.href = '/front/search?title=' + this.title
+    },
+
     loadNotice() {
       this.$request.get('/notice/selectAll').then(res => {
         this.notice = res.data
