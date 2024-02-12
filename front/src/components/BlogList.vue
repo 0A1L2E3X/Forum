@@ -14,8 +14,18 @@
             </div>
 
             <div style="width: fit-content">
-              <el-tag v-for="item in JSON.parse(item.tags || '[]')" :key="item" style="margin-right: 5px">{{ item }}</el-tag>
+              <el-tag v-for="(item, index) in JSON.parse(item.tags || '[]')" :key="index" style="margin-right: 5px">{{ item }}</el-tag>
             </div>
+          </div>
+
+          <div style="font-size: 12px" v-if="showOptions">
+            <span style="margin-left: 5px; cursor: pointer; color: red" @click="del(item.id)">
+              <i class="el-icon-delete" style="margin-right: 10px"></i>delete
+            </span>
+
+            <span style="margin-left: 10px; cursor: pointer; color: blue" @click="edit(item.id)">
+              <i class="el-icon-edit" style="margin-right: 10px"></i>edit
+            </span>
           </div>
         </div>
 
@@ -24,7 +34,7 @@
 <!--        </div>-->
       </div>
 
-      <div v-else v-if="total === 0" style="padding: 20px 0; text-align: center; font-size: 16px; color: #666">No data</div>
+      <div v-if="total === 0" style="padding: 20px 0; text-align: center; font-size: 16px; color: #666">No data</div>
 
       <div style="margin-top: 10px">
         <el-pagination
@@ -47,6 +57,8 @@ export default {
 
   props: {
     categoryName: null,
+    type: null,
+    showOptions: false,
   },
 
   data() {
@@ -71,12 +83,21 @@ export default {
   methods: {
     loadBlogs(pageNum) {
       if (pageNum) this.pageNum = pageNum
-      this.$request.get('/blog/selectPage', {
+
+      let url
+      switch (this.type) {
+        case 'user': url = '/blog/selectUser'; break;
+        case 'like': url = '/blog/selectLike'; break;
+        case 'collect': url = '/blog/selectCollect'; break;
+        case 'comment': url = '/blog/selectComment'; break;
+        default: url = '/blog/selectPage'
+      }
+
+      this.$request.get(url, {
         params: {
           pageNum: this.pageNum,
           pageSize: this.pageSize,
           categoryName: this.categoryName === 'All Blogs' ? null : this.categoryName,
-
           title: this.$route.query.title
         }
       }).then(res => {
@@ -87,6 +108,24 @@ export default {
 
     handleCurrentChange(pageNum) {
       this.loadBlogs(pageNum)
+    },
+
+    del(id) {   // 单个删除
+      this.$confirm('are yous sure to delete it?', 'confirm', {type: "warning"}).then(response => {
+        this.$request.delete('/blog/delete/' + id).then(res => {
+          if (res.code === '200') {   // 表示操作成功
+            this.$message.success('success')
+            this.loadBlogs(1)
+          } else {
+            this.$message.error(res.msg)  // 弹出错误的信息
+          }
+        })
+      }).catch(() => {
+      })
+    },
+
+    edit(id) {
+      window.open('/front/newBlog?blogId=' + id)
     },
   }
 }

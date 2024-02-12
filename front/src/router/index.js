@@ -53,6 +53,8 @@ const routes = [
         component: () => import('../views/front/BlogDetail') },
       { path: 'search', name: 'Search', meta: { name: 'Search' },
         component: () => import('../views/front/Search.vue') },
+      { path: 'newBlog', name: 'NewBlog', meta: { name: 'NewBlog' },
+        component: () => import('../views/front/NewBlog.vue') },
     ]
   },
   { path: '/login', name: 'Login', meta: { name: 'Sign In' },

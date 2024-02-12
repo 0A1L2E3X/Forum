@@ -13,7 +13,7 @@
         </div>
       </div>
 
-      <div style="flex: 1">
+      <div style="flex: 1; width: 0">
         <div class="card" style="padding: 20px 30px; margin-bottom: 10px">
           <div style="font-weight: bold; font-size: 24px; margin-bottom: 20px">{{ blog.title }}</div>
 
@@ -193,5 +193,13 @@ p {
 
 .comment-active {
   color: #2A60C9;
+}
+
+pre {
+  white-space: pre-wrap;
+  white-space: -moz-pre-wrap;
+  white-space: pre-wrap;
+  white-space: -o-pre-wrap;
+  word-wrap: break-word;
 }
 </style>

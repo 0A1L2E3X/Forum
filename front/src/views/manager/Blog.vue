@@ -189,6 +189,7 @@ export default {
         }
       })
     },
+
     del(id) {   // 单个删除
       this.$confirm('are yous sure to delete it?', 'confirm', {type: "warning"}).then(response => {
         this.$request.delete('/blog/delete/' + id).then(res => {
@@ -202,6 +203,7 @@ export default {
       }).catch(() => {
       })
     },
+
     handleSelectionChange(rows) {   // 当前选中的所有的行数据
       this.ids = rows.map(v => v.id)   //  [1,2]
     },

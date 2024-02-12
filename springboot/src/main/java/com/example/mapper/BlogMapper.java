@@ -34,4 +34,10 @@ public interface BlogMapper {
 
     @Select("select * from blog where user_id = #{userID}")
     List<Blog> selectUserBlog(Integer userID);
+
+    List<Blog> selectComment(Blog blog);
+
+    List<Blog> selectLike(Blog blog);
+
+    List<Blog> selectCollect(Blog blog);
 }

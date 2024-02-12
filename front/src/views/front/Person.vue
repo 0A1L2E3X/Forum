@@ -1,60 +1,53 @@
 <template>
-  <div class="main-content">
-    <el-card style="width: 50%; margin: 30px auto">
-      <div style="text-align: right; margin-bottom: 20px">
-        <el-button type="primary" @click="updatePassword">Change password</el-button>
-      </div>
-      <el-form :model="user" label-width="80px" style="padding-right: 20px">
-        <div style="margin: 15px; text-align: center">
-          <el-upload
-              class="avatar-uploader"
-              :action="$baseUrl + '/files/upload'"
-              :show-file-list="false"
-              :on-success="handleAvatarSuccess"
-          >
-            <img v-if="user.avatar" :src="user.avatar" class="avatar" />
-            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-          </el-upload>
+  <div class="main-content" style="width: 50%">
+    <el-tabs v-model="activeName" @tab-click="clickTab">
+      <el-tab-pane label="profile" name="profile">
+        <Profile @update:user="updateUser"/>
+      </el-tab-pane>
+
+      <el-tab-pane label="my blogs" name="myBlogs">
+        <div class="card" style="padding: 5px">
+          <el-button @click="newBlogs">New Blog</el-button>
         </div>
-        <el-form-item label="username" prop="username">
-          <el-input v-model="user.username" placeholder="username" disabled></el-input>
-        </el-form-item>
-        <el-form-item label="name" prop="name">
-          <el-input v-model="user.name" placeholder="name"></el-input>
-        </el-form-item>
-        <el-form-item label="phone" prop="phone">
-          <el-input v-model="user.phone" placeholder="phone"></el-input>
-        </el-form-item>
-        <el-form-item label="email" prop="email">
-          <el-input v-model="user.email" placeholder="email"></el-input>
-        </el-form-item>
-        <div style="text-align: center; margin-bottom: 20px">
-          <el-button type="primary" @click="update">Save</el-button>
+
+        <div style="margin-top: 10px">
+          <BlogList type="user" show-options="true" />
         </div>
-      </el-form>
-    </el-card>
-    <el-dialog title="Change Password" :visible.sync="dialogVisible" width="30%" :close-on-click-modal="false" destroy-on-close>
-      <el-form :model="user" label-width="80px" style="padding-right: 20px" :rules="rules" ref="formRef">
-        <el-form-item label="Original password" prop="password">
-          <el-input show-password v-model="user.password" placeholder="Original password"></el-input>
-        </el-form-item>
-        <el-form-item label="New password" prop="newPassword">
-          <el-input show-password v-model="user.newPassword" placeholder="New password"></el-input>
-        </el-form-item>
-        <el-form-item label="Confirm password" prop="confirmPassword">
-          <el-input show-password v-model="user.confirmPassword" placeholder="Confirm password"></el-input>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="fromVisible = false">Cancel</el-button>
-        <el-button type="primary" @click="save">Confirm</el-button>
-      </div>
-    </el-dialog>
+      </el-tab-pane>
+
+      <el-tab-pane label="my likes" name="myLikes">
+        <div style="margin-top: 10px">
+          <BlogList type="like" />
+        </div>
+      </el-tab-pane>
+
+      <el-tab-pane label="my favorites" name="myFavorites">
+        <div style="margin-top: 10px">
+          <BlogList type="collect" />
+        </div>
+      </el-tab-pane>
+
+      <el-tab-pane label="my comments" name="myComments">
+        <div style="margin-top: 10px">
+          <BlogList type="comment" />
+        </div>
+      </el-tab-pane>
+    </el-tabs>
+
+
   </div>
 </template>
 
 <script>
+import Profile from "@/components/Profile.vue";
+import BlogList from "@/components/BlogList.vue";
+
 export default {
+  components: {
+    BlogList,
+    Profile
+  },
+
   data() {
     const validatePassword = (rule, value, callback) => {
       if (value === '') {
@@ -65,9 +58,12 @@ export default {
         callback()
       }
     }
+
     return {
       user: JSON.parse(localStorage.getItem('xm-user') || '{}'),
       dialogVisible: false,
+
+      activeName: 'profile',
 
       rules: {
         password: [
@@ -85,7 +81,20 @@ export default {
   created() {
 
   },
+
   methods: {
+    updateUser() {
+      this.$emit('update:user')
+    },
+
+    newBlogs() {
+      window.open('/front/newBlog')
+    },
+
+    clickTab(tab) {
+      console.log(tab)
+    },
+
     update() {
       // 保存当前的用户信息到数据库
       this.$request.put('/user/update', this.user).then(res => {

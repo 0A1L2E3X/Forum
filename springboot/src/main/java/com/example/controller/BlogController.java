@@ -100,4 +100,36 @@ public class BlogController {
         Set<Blog> blogSet = blogService.selectRecommend(blogId);
         return Result.success(blogSet);
     }
+
+    @GetMapping("/selectUser")
+    public Result selectUser(Blog blog,
+                             @RequestParam(defaultValue = "1") Integer pageNum,
+                             @RequestParam(defaultValue = "10") Integer pageSize) {
+        PageInfo<Blog> page = blogService.selectUser(blog, pageNum, pageSize);
+        return Result.success(page);
+    }
+
+    @GetMapping("/selectLike")
+    public Result selectLike(Blog blog,
+                             @RequestParam(defaultValue = "1") Integer pageNum,
+                             @RequestParam(defaultValue = "10") Integer pageSize) {
+        PageInfo<Blog> page = blogService.selectLike(blog, pageNum, pageSize);
+        return Result.success(page);
+    }
+
+    @GetMapping("/selectCollect")
+    public Result selectCollect(Blog blog,
+                                @RequestParam(defaultValue = "1") Integer pageNum,
+                                @RequestParam(defaultValue = "10") Integer pageSize) {
+        PageInfo<Blog> page = blogService.selectCollect(blog, pageNum, pageSize);
+        return Result.success(page);
+    }
+
+    @GetMapping("/selectComment")
+    public Result selectComment(Blog blog,
+                                @RequestParam(defaultValue = "1") Integer pageNum,
+                                @RequestParam(defaultValue = "10") Integer pageSize) {
+        PageInfo<Blog> page = blogService.selectComment(blog, pageNum, pageSize);
+        return Result.success(page);
+    }
 }
