@@ -29,8 +29,11 @@
         </el-form-item>
         <el-form-item label="label" prop="tags">
           <el-select v-model="tagsArr" multiple filterable allow-create default-first-option style="width: 100%">
-            <el-option value="ALevel"></el-option>
             <el-option value="Q&A"></el-option>
+            <el-option value="News"></el-option>
+            <el-option value="ALevel"></el-option>
+            <el-option value="IGCSE"></el-option>
+            <el-option value="Algorithm"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="Content" prop="content">

@@ -16,7 +16,7 @@
         <div style="flex: 1">
           <!-- comment -->
           <div style="margin-bottom: 20px">
-            <div style="margin-bottom: 5px; font-weight: bold">{{ item.userName }}</div>
+            <div style="margin-bottom: 5px; font-weight: bold">@{{ item.userName }}</div>
             <div style="margin-bottom: 5px">{{ item.content }}</div>
             <div style="color: #666; font-size: 12px; cursor: pointer" >
               <span style="margin-right: 20px">{{ item.time }}</span>
@@ -41,7 +41,7 @@
             <img :src="sub.avatar" alt="" style="width: 35px; height: 35px; border-radius: 50%">
             <div style="flex: 1">
               <div style="margin-bottom: 5px">
-                <span style="font-weight: bold">{{ sub.userName }}</span>
+                <span style="font-weight: bold">@{{ sub.userName }}</span>
                 <span v-if="sub.replyUser !== item.userName"> reply {{ sub.replyUser }}</span>
               </div>
               <div style="margin-bottom: 5px">{{ sub.content }}</div>

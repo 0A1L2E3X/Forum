@@ -1,10 +1,10 @@
 <template>
   <div class="container">
-    <div style="width: 400px; padding: 30px; background-color: white; border-radius: 5px;">
-      <div style="text-align: center; font-size: 20px; margin-bottom: 20px; color: #333">Sign Up</div>
+    <div class="interface">
+      <div style="text-align: center; font-size: 20px; margin-bottom: 20px; color: white">Sign Up</div>
       <el-form :model="form" :rules="rules" ref="formRef">
         <el-form-item prop="username">
-          <el-input prefix-icon="el-icon-user" placeholder="username" v-model="form.username"></el-input>
+          <el-input prefix-icon="el-icon-user" placeholder="username" v-model="form.username" style="color: black"></el-input>
         </el-form-item>
         <el-form-item prop="password">
           <el-input prefix-icon="el-icon-lock" placeholder="password" show-password  v-model="form.password"></el-input>
@@ -82,13 +82,23 @@ export default {
 .container {
   height: 100vh;
   overflow: hidden;
-  background-image: url("@/assets/imgs/bg1.jpg");
+
+  //background-image: url("@/assets/imgs/bg1.jpg");
+  background-color: #0d1117;
+
   background-size: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   color: #666;
 }
+
+.interface {
+  width: 400px;
+  padding: 30px;
+  background-color: #161b22;
+}
+
 a {
   color: #2a60c9;
 }
